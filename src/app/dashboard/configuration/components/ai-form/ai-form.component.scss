@@ -1,0 +1,37 @@
+form {
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr 1fr 150px;
+   gap: 10px;
+ }
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.api-token {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  mat-form-field {
+    width: inherit;
+  }
+  button {
+    margin-top: 5px;
+  }
+  .buttons {
+    display: flex;
+    gap: 5px;
+  }
+
+}
+
+.temperature {
+  display: flex;
+  flex-direction: column;
+}
+
+input.max-tokens::-webkit-outer-spin-button,
+input.max-tokens::-webkit-inner-spin-button {
+  display: none;
+}
+

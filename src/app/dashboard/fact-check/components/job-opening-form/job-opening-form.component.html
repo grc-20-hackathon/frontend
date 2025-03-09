@@ -1,0 +1,1485 @@
+<section>
+  <header>
+    <mat-checkbox
+      [disabled]="!jobOpening.canPublish"
+      [checked]="jobOpening.isSelected"
+      (change)="onProjectSelectionChange($event.checked)"
+      >Select</mat-checkbox
+    >
+  </header>
+  <div class="job-opening">
+    <div>
+      <div class="wrap-entity">
+        <h3>{{ jobOpening?.name?.value ?? '' }}</h3>
+        @if (jobOpening.geoId) {
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span class="value"> {{ jobOpening.geoId }}</span>
+            </span>
+            <grc-copy-btn [value]="jobOpening.geoId"></grc-copy-btn>
+          </div>
+        }
+      </div>
+      <div class="wrap-entity">
+        <div class="wrap-copy">
+          <span>
+            <span class="name">Name:</span>
+            <span class="value"> {{ jobOpening?.name?.value }}</span>
+          </span>
+          <grc-copy-btn [value]="jobOpening?.name?.value"></grc-copy-btn>
+        </div>
+        @if (!jobOpening.name?.options) {
+          <span style="color: #4dbf63">Will create new entity</span>
+        } @else {
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span class="value" [class.no-data]="!jobOpening?.name?.geoId">
+                {{ jobOpening?.name?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening?.name?.geoId) {
+              <grc-copy-btn [value]="jobOpening.name?.geoId"></grc-copy-btn>
+            }
+          </div>
+        }
+        @if (jobOpening.name?.options && isArray(jobOpening.name?.options)) {
+          <mat-form-field appearance="outline">
+            <mat-label>Select type</mat-label>
+            <mat-select
+              (selectionChange)="
+                onSelectChange($event, jobOpening.name?.id ?? '')
+              "
+            >
+              <mat-option [value]="null">n/a</mat-option>
+              @for (option of jobOpening?.name?.options; track option.id) {
+                <mat-option [value]="option.id">
+                  {{ option.name }} : {{ option.id }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+      </div>
+      @if (jobOpening?.description?.value) {
+        <div class="description-wrap">
+          <button
+            mat-icon-button
+            color="primary"
+            matTooltip="Edit"
+            (click)="
+              onEdit(
+                jobOpening?.description?.value,
+                jobOpening?.description?.id ?? ''
+              )
+            "
+            matTooltipPosition="after"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <span class="name">Description: </span>
+          <span>{{ jobOpening?.description?.value }}</span>
+        </div>
+      }
+    </div>
+    <!--    types -->
+    @if (jobOpening?.types?.value?.length ?? 0 > 0) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Types:</div>
+            <grc-copy-btn [value]="jobOpening?.types?.property"></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span class="value" [class.no-data]="!jobOpening?.types?.geoId">
+                {{ jobOpening?.types?.geoId ?? 'No Id yet' }}
+              </span>
+            </span>
+            @if (jobOpening?.types?.geoId) {
+              <grc-copy-btn [value]="jobOpening.types?.geoId"></grc-copy-btn>
+            }
+          </div>
+        </div>
+        <div>
+          @for (type of jobOpening?.types?.value; track type.id) {
+            <div class="wrap-entity">
+              <div class="wrap-copy">
+                <span>
+                  <span class="name">Type:</span>
+                  <span class="value"> {{ type?.value?.name?.value }}</span>
+                </span>
+                <grc-copy-btn [value]="type?.value?.name?.value"></grc-copy-btn>
+              </div>
+              <div class="wrap-copy">
+                <span>
+                  <span class="name">Geo Id:</span>
+                  <span class="value" [class.no-data]="!type.geoId">
+                    {{ type.geoId ?? 'No Id yet' }}</span
+                  >
+                </span>
+                @if (type.geoId) {
+                  <grc-copy-btn [value]="type.geoId"></grc-copy-btn>
+                }
+              </div>
+              @if (
+                type?.options &&
+                isArray(type.options) &&
+                type.options.length > 1
+              ) {
+                <mat-form-field appearance="outline">
+                  <mat-label>Select type</mat-label>
+                  <mat-select
+                    (selectionChange)="onSelectChange($event, type.id)"
+                  >
+                    <mat-option [value]="null">n/a</mat-option>
+                    @for (option of type.options; track option.id) {
+                      <mat-option [value]="option.id">
+                        {{ option.name }} : {{ option.id }}
+                      </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              }
+            </div>
+            @if (type?.value?.description?.value) {
+              <div class="description-wrap">
+                <button mat-icon-button color="primary" matTooltip="Edit" (click)="onEdit(type?.value?.description?.value, type?.value?.description?.id ?? '')" matTooltipPosition="after">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <span class="name">Description: </span>
+                <span>{{ type.value?.description?.value }}</span>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+    <!--    avatar -->
+    @if (jobOpening.avatar?.value?.value) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Avatar:</div>
+            <grc-copy-btn [value]="jobOpening?.avatar?.property"></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span class="value" [class.no-data]="!jobOpening.avatar?.geoId">
+                {{ jobOpening.avatar?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening.avatar?.geoId) {
+              <grc-copy-btn [value]="jobOpening.avatar?.geoId"></grc-copy-btn>
+            }
+          </div>
+        </div>
+        <div class="wrap-entity">
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Image:</span>
+            </span>
+            <grc-copy-btn
+              [value]="jobOpening?.avatar?.value?.property"
+            ></grc-copy-btn>
+          </div>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span
+                class="value"
+                [class.no-data]="!jobOpening?.avatar?.value?.geoId"
+              >
+                {{ jobOpening?.avatar?.value?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening?.avatar?.value?.geoId) {
+              <grc-copy-btn
+                [value]="jobOpening?.avatar?.value?.geoId"
+              ></grc-copy-btn>
+            }
+          </div>
+        </div>
+      </div>
+    }
+    <!--    cover -->
+    @if (jobOpening.cover?.value?.value) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Cover:</div>
+            <grc-copy-btn [value]="jobOpening.cover?.property"></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span class="value" [class.no-data]="!jobOpening.cover?.geoId">
+                {{ jobOpening.cover?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening.cover?.geoId) {
+              <grc-copy-btn [value]="jobOpening.cover?.geoId"></grc-copy-btn>
+            }
+          </div>
+        </div>
+        <div class="wrap-entity">
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Image</span>
+            </span>
+            <grc-copy-btn
+              [value]="jobOpening?.cover?.value?.property"
+            ></grc-copy-btn>
+          </div>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span
+                class="value"
+                [class.no-data]="!jobOpening?.cover?.value?.geoId"
+              >
+                {{ jobOpening?.cover?.value?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening?.cover?.value?.geoId) {
+              <grc-copy-btn
+                [value]="jobOpening?.cover?.value?.geoId"
+              ></grc-copy-btn>
+            }
+          </div>
+        </div>
+      </div>
+    }
+    <!--    salaryMin -->
+    @if (jobOpening.salaryMin?.value) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Salary min:</div>
+            <grc-copy-btn
+              [value]="jobOpening.salaryMin?.property"
+            ></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span
+                class="value"
+                [class.no-data]="!jobOpening.salaryMin?.geoId"
+              >
+                {{ jobOpening.salaryMin?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening.salaryMin?.geoId) {
+              <grc-copy-btn
+                [value]="jobOpening.salaryMin?.geoId"
+              ></grc-copy-btn>
+            }
+          </div>
+        </div>
+        <div class="wrap-entity">
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Unit:</span>
+              <span class="value">
+                {{ jobOpening.salaryMin?.currency?.value }}</span
+              >
+            </span>
+            <grc-copy-btn
+              [value]="jobOpening.salaryMin?.currency?.value"
+            ></grc-copy-btn>
+          </div>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span
+                class="value"
+                [class.no-data]="!jobOpening.salaryMin?.currency?.geoId"
+              >
+                {{ jobOpening.salaryMin?.currency?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening.salaryMin?.currency?.geoId) {
+              <grc-copy-btn
+                [value]="jobOpening.salaryMin?.currency?.geoId"
+              ></grc-copy-btn>
+            }
+          </div>
+          @if (
+            jobOpening.salaryMin?.currency?.options &&
+            isArray(jobOpening.salaryMin?.currency?.options) &&
+            (jobOpening.salaryMin?.currency?.options?.length ?? 0 > 1)
+          ) {
+            <mat-form-field appearance="outline">
+              <mat-label>Select Unit</mat-label>
+              <mat-select
+                (selectionChange)="
+                  onSelectChange(
+                    $event,
+                    jobOpening.salaryMin?.currency?.id ?? ''
+                  )
+                "
+              >
+                <mat-option [value]="null">n/a</mat-option>
+                @for (
+                  option of jobOpening.salaryMin?.currency?.options;
+                  track option.id
+                ) {
+                  <mat-option [value]="option.id">
+                    {{ option.name }} : {{ option.id }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          }
+        </div>
+        <div class="value-wrap">
+          <span class="name">Value: </span>
+          <span>{{ jobOpening.salaryMin?.value }}</span>
+        </div>
+      </div>
+    }
+    <!--    salaryMax -->
+    @if (jobOpening.salaryMax?.value) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Salary max:</div>
+            <grc-copy-btn
+              [value]="jobOpening.salaryMax?.property"
+            ></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span
+                class="value"
+                [class.no-data]="!jobOpening.salaryMax?.geoId"
+              >
+                {{ jobOpening.salaryMax?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening.salaryMax?.geoId) {
+              <grc-copy-btn
+                [value]="jobOpening.salaryMax?.geoId"
+              ></grc-copy-btn>
+            }
+          </div>
+        </div>
+        <div class="wrap-entity">
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Unit:</span>
+              <span class="value">
+                {{ jobOpening.salaryMax?.currency?.value }}</span
+              >
+            </span>
+            <grc-copy-btn
+              [value]="jobOpening.salaryMax?.currency?.value"
+            ></grc-copy-btn>
+          </div>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span
+                class="value"
+                [class.no-data]="!jobOpening.salaryMax?.currency?.geoId"
+              >
+                {{ jobOpening.salaryMax?.currency?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening.salaryMax?.currency?.geoId) {
+              <grc-copy-btn
+                [value]="jobOpening.salaryMax?.currency?.geoId"
+              ></grc-copy-btn>
+            }
+          </div>
+          @if (
+            jobOpening.salaryMax?.currency?.options &&
+            isArray(jobOpening.salaryMax?.currency?.options) &&
+            (jobOpening.salaryMax?.currency?.options?.length ?? 0 > 1)
+          ) {
+            <mat-form-field appearance="outline">
+              <mat-label>Select Unit</mat-label>
+              <mat-select
+                (selectionChange)="
+                  onSelectChange(
+                    $event,
+                    jobOpening.salaryMax?.currency?.id ?? ''
+                  )
+                "
+              >
+                <mat-option [value]="null">n/a</mat-option>
+                @for (
+                  option of jobOpening.salaryMax?.currency?.options;
+                  track option.id
+                ) {
+                  <mat-option [value]="option.id">
+                    {{ option.name }} : {{ option.id }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          }
+        </div>
+        <div class="value-wrap">
+          <span class="name">Value: </span>
+          <span>{{ jobOpening.salaryMax?.value }}</span>
+        </div>
+      </div>
+    }
+    <!--    webURL -->
+    @if (jobOpening.webURL?.value) {
+      <mat-divider></mat-divider>
+      <div class="wrap-entity">
+        <h4 class="wrap-copy">
+          <div>Web URL:</div>
+          <grc-copy-btn [value]="jobOpening?.webURL?.property"></grc-copy-btn>
+        </h4>
+        <div class="wrap-copy">
+          <span>
+            <span class="name">Geo Id:</span>
+            <span class="value" [class.no-data]="!jobOpening?.webURL?.geoId">
+              {{ jobOpening?.webURL?.geoId ?? 'No Id yet' }}</span
+            >
+          </span>
+          @if (jobOpening?.webURL?.geoId) {
+            <grc-copy-btn [value]="jobOpening.webURL?.geoId"></grc-copy-btn>
+          }
+        </div>
+      </div>
+      <div class="wrap-entity">
+        <div class="wrap-copy">
+          <span>
+            <span class="name">Url:</span>
+            @if (jobOpening.webURL?.value) {
+              <a
+                class="value"
+                href="{{ jobOpening.webURL?.value }}"
+                target="_blank"
+              >
+                {{ jobOpening.webURL?.value }}
+              </a>
+            }
+          </span>
+        </div>
+      </div>
+    }
+    <!--    skills -->
+    @if (jobOpening.skills?.value?.length ?? 0 > 0) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Skills:</div>
+            <grc-copy-btn [value]="jobOpening?.skills?.property"></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span class="value" [class.no-data]="!jobOpening?.skills?.geoId">
+                {{ jobOpening?.skills?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening?.skills?.geoId) {
+              <grc-copy-btn [value]="jobOpening.skills?.geoId"></grc-copy-btn>
+            }
+          </div>
+        </div>
+        @for (skill of jobOpening?.skills?.value; track skill.id) {
+          <div class="wrap-entity">
+            <div class="wrap-copy">
+              <span>
+                <mat-checkbox
+                  [checked]="skill?.isSelected ?? true"
+                  (change)="onEntitySelectionChange($event.checked, skill.id)"
+                ></mat-checkbox>
+                <span class="name">Skill:</span>
+                <span class="value"> {{ skill?.value?.name?.value }}</span>
+              </span>
+              <grc-copy-btn [value]="skill?.value?.name?.value"></grc-copy-btn>
+            </div>
+            @if (!skill?.options?.length) {
+              <span style="color: #4dbf63">Will create new entity</span>
+            } @else {
+              <div class="wrap-copy">
+                <span>
+                  <span class="name">Geo Id:</span>
+                  <span class="value" [class.no-data]="!skill.geoId">
+                    {{ skill.geoId ?? 'No Id yet' }}</span
+                  >
+                </span>
+                @if (skill.geoId) {
+                  <grc-copy-btn [value]="skill.geoId"></grc-copy-btn>
+                }
+              </div>
+            }
+            @if (
+              skill?.options &&
+              isArray(skill.options) &&
+              skill.options.length > 1
+            ) {
+              <mat-form-field appearance="outline">
+                <mat-label>Select skill</mat-label>
+                <mat-select
+                  (selectionChange)="onSelectChange($event, skill.id)"
+                >
+                  <mat-option [value]="null">n/a</mat-option>
+                  @for (option of skill.options; track option.id) {
+                    <mat-option [value]="option.id">
+                      {{ option.name }} : {{ option.id }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            }
+          </div>
+          @if (skill?.value?.description?.value) {
+            <div class="description-wrap">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit"
+                (click)="
+              onEdit(
+                skill?.value?.description?.value,
+                skill?.value?.description?.id ?? ''
+              )
+            "
+                matTooltipPosition="after"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <span class="name">Description: </span>
+              <span>{{ skill.value?.description?.value }}</span>
+            </div>
+          }
+        }
+      </div>
+    }
+    <!--    roles -->
+    @if (jobOpening.roles?.value?.length ?? 0 > 0) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Roles:</div>
+            <grc-copy-btn [value]="jobOpening?.roles?.property"></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span class="value" [class.no-data]="!jobOpening?.roles?.geoId">
+                {{ jobOpening?.roles?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening?.roles?.geoId) {
+              <grc-copy-btn [value]="jobOpening.roles?.geoId"></grc-copy-btn>
+            }
+          </div>
+        </div>
+        @for (role of jobOpening?.roles?.value; track role.id) {
+          <div class="wrap-entity">
+            <div class="wrap-copy">
+              <span>
+                <mat-checkbox
+                  [checked]="role?.isSelected ?? true"
+                  (change)="onEntitySelectionChange($event.checked, role.id)"
+                ></mat-checkbox>
+                <span class="name">Role:</span>
+                <span class="value"> {{ role?.value?.name?.value }}</span>
+              </span>
+              <grc-copy-btn [value]="role?.value?.name?.value"></grc-copy-btn>
+            </div>
+            @if (!role?.options?.length) {
+              <span style="color: #4dbf63">Will create new entity</span>
+            } @else {
+              <div class="wrap-copy">
+                <span>
+                  <span class="name">Geo Id:</span>
+                  <span class="value" [class.no-data]="!role.geoId">
+                    {{ role.geoId ?? 'No Id yet' }}</span
+                  >
+                </span>
+                @if (role.geoId) {
+                  <grc-copy-btn [value]="role.geoId"></grc-copy-btn>
+                }
+              </div>
+            }
+            @if (
+              role?.options && isArray(role.options) && role.options.length > 1
+            ) {
+              <mat-form-field appearance="outline">
+                <mat-label>Select role</mat-label>
+                <mat-select (selectionChange)="onSelectChange($event, role.id)">
+                  <mat-option [value]="null">n/a</mat-option>
+                  @for (option of role.options; track option.id) {
+                    <mat-option [value]="option.id">
+                      {{ option.name }} : {{ option.id }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            }
+          </div>
+          @if (role?.value?.description?.value) {
+            <div class="description-wrap">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit"
+                (click)="
+              onEdit(
+                role?.value?.description?.value,
+                role?.value?.description?.id ?? ''
+              )
+            "
+                matTooltipPosition="after"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <span class="name">Description: </span>
+              <span>{{ role.value?.description?.value }}</span>
+            </div>
+          }
+        }
+      </div>
+    }
+    <!--    employmentTypes -->
+    @if (jobOpening.employmentTypes?.value?.length ?? 0 > 0) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Employment types</div>
+            <grc-copy-btn
+              [value]="jobOpening.employmentTypes?.property"
+            ></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span
+                class="value"
+                [class.no-data]="!jobOpening.employmentTypes?.geoId"
+              >
+                {{ jobOpening.employmentTypes?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening.employmentTypes?.geoId) {
+              <grc-copy-btn
+                [value]="jobOpening.employmentTypes?.geoId"
+              ></grc-copy-btn>
+            }
+          </div>
+        </div>
+        @for (
+          employmentType of jobOpening.employmentTypes?.value;
+          track employmentType.id
+        ) {
+          <div class="wrap-entity">
+            <div class="wrap-copy">
+              <span>
+                <mat-checkbox
+                  [checked]="employmentType?.isSelected ?? true"
+                  (change)="
+                    onEntitySelectionChange($event.checked, employmentType.id)
+                  "
+                ></mat-checkbox>
+                <span class="name">Employment Type:</span>
+                <span class="value">
+                  {{ employmentType.value?.name?.value }}</span
+                >
+              </span>
+              <grc-copy-btn
+                [value]="employmentType.value?.name?.value"
+              ></grc-copy-btn>
+            </div>
+            @if (!employmentType?.options?.length) {
+              <span style="color: #4dbf63">Will create new entity</span>
+            } @else {
+              <div class="wrap-copy">
+                <span>
+                  <span class="name">Geo Id:</span>
+                  <span class="value" [class.no-data]="!employmentType.geoId">
+                    {{ employmentType.geoId ?? 'No Id yet' }}</span
+                  >
+                </span>
+                @if (employmentType.geoId) {
+                  <grc-copy-btn [value]="employmentType.geoId"></grc-copy-btn>
+                }
+              </div>
+            }
+            @if (
+              employmentType?.options &&
+              isArray(employmentType.options) &&
+              employmentType.options.length > 1
+            ) {
+              <mat-form-field appearance="outline">
+                <mat-label>Select employment type</mat-label>
+                <mat-select
+                  (selectionChange)="onSelectChange($event, employmentType.id)"
+                >
+                  <mat-option [value]="null">n/a</mat-option>
+                  @for (option of employmentType.options; track option.id) {
+                    <mat-option [value]="option.id">
+                      {{ option.name }} : {{ option.id }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            }
+          </div>
+          @if (employmentType?.value?.description?.value) {
+            <div class="description-wrap">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit"
+                (click)="
+              onEdit(
+                employmentType?.value?.description?.value,
+                employmentType?.value?.description?.id ?? ''
+              )
+            "
+                matTooltipPosition="after"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <span class="name">Description: </span>
+              <span>{{ employmentType?.value?.description?.value }}</span>
+            </div>
+          }
+        }
+      </div>
+    }
+    <!--    relatedSpaces -->
+    @if (jobOpening.relatedSpaces?.value?.length ?? 0 > 0) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Related spaces</div>
+            <grc-copy-btn
+              [value]="jobOpening.relatedSpaces?.property"
+            ></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span
+                class="value"
+                [class.no-data]="!jobOpening.relatedSpaces?.geoId"
+              >
+                {{ jobOpening.relatedSpaces?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening.relatedSpaces?.geoId) {
+              <grc-copy-btn
+                [value]="jobOpening.relatedSpaces?.geoId"
+              ></grc-copy-btn>
+            }
+          </div>
+        </div>
+        @for (
+          relatedSpace of jobOpening.relatedSpaces?.value;
+          track relatedSpace.id
+        ) {
+          <div class="wrap-entity">
+            <div class="wrap-copy">
+              <span>
+                <mat-checkbox
+                  [checked]="relatedSpace?.isSelected ?? true"
+                  (change)="
+                    onEntitySelectionChange($event.checked, relatedSpace.id)
+                  "
+                ></mat-checkbox>
+                <span class="name">Space:</span>
+                <span class="value">
+                  {{ relatedSpace.value?.name?.value }}</span
+                >
+              </span>
+              <grc-copy-btn
+                [value]="relatedSpace.value?.name?.value"
+              ></grc-copy-btn>
+            </div>
+            <div class="wrap-copy">
+              <span>
+                <span class="name">Geo Id:</span>
+                <span class="value" [class.no-data]="!relatedSpace.geoId">
+                  {{ relatedSpace.geoId ?? 'No Id yet' }}</span
+                >
+              </span>
+              @if (relatedSpace.geoId) {
+                <grc-copy-btn [value]="relatedSpace.geoId"></grc-copy-btn>
+              }
+            </div>
+            @if (
+              relatedSpace?.options &&
+              isArray(relatedSpace.options) &&
+              relatedSpace.options.length > 1
+            ) {
+              <mat-form-field appearance="outline">
+                <mat-label>Select space</mat-label>
+                <mat-select
+                  (selectionChange)="onSelectChange($event, relatedSpace.id)"
+                >
+                  <mat-option [value]="null">n/a</mat-option>
+                  @for (option of relatedSpace.options; track option.id) {
+                    <mat-option [value]="option.id">
+                      {{ option.name }} : {{ option.id }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            }
+          </div>
+          @if (relatedSpace?.value?.description?.value) {
+            <div class="description-wrap">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit"
+                (click)="
+              onEdit(
+                relatedSpace?.value?.description?.value,
+                relatedSpace?.value?.description?.id ?? ''
+              )
+            "
+                matTooltipPosition="after"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <span class="name">Description: </span>
+              <span>{{ relatedSpace?.value?.description?.value }}</span>
+            </div>
+          }
+        }
+      </div>
+    }
+    <!--    location -->
+    @if (
+      jobOpening.location?.value?.city || jobOpening.location?.value?.region
+    ) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Location</div>
+            <grc-copy-btn
+              [value]="jobOpening.relatedSpaces?.property"
+            ></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span class="value" [class.no-data]="!jobOpening.location?.geoId">
+                {{ jobOpening.location?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening.location?.geoId) {
+              <grc-copy-btn [value]="jobOpening.location?.geoId"></grc-copy-btn>
+            }
+          </div>
+        </div>
+        @if (jobOpening.location?.value?.city?.value) {
+          <div class="wrap-entity">
+            <div class="wrap-copy">
+              <span>
+                <span class="name">City:</span>
+                <span class="value">
+                  {{ jobOpening.location?.value?.city?.value?.name?.value }}
+                </span>
+              </span>
+              <grc-copy-btn
+                [value]="jobOpening.location?.value?.city?.value?.name?.value"
+              ></grc-copy-btn>
+            </div>
+            <div class="wrap-copy">
+              <span>
+                <span class="name">Geo Id:</span>
+                <span
+                  class="value"
+                  [class.no-data]="!jobOpening.location?.value?.city?.geoId"
+                >
+                  {{
+                    jobOpening.location?.value?.city?.geoId ?? 'No Id yet'
+                  }}</span
+                >
+              </span>
+              @if (jobOpening.location?.value?.city?.geoId) {
+                <grc-copy-btn
+                  [value]="jobOpening.location?.value?.city?.geoId"
+                ></grc-copy-btn>
+              }
+            </div>
+            @if (
+              jobOpening.location?.value?.city?.options &&
+              isArray(jobOpening.location?.value?.city?.options) &&
+              (jobOpening.location?.value?.city?.options?.length ?? 0 > 1)
+            ) {
+              <mat-form-field appearance="outline">
+                <mat-label>Select city</mat-label>
+                <mat-select
+                  (selectionChange)="
+                    onSelectChange(
+                      $event,
+                      jobOpening.location?.value?.city?.id ?? ''
+                    )
+                  "
+                >
+                  <mat-option [value]="null">n/a</mat-option>
+                  @for (
+                    option of jobOpening.location?.value?.city?.options;
+                    track option.id
+                  ) {
+                    <mat-option [value]="option.id">
+                      {{ option.name }} : {{ option.id }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            }
+          </div>
+          @if (jobOpening.location?.value?.city?.value?.description?.value) {
+            <div class="description-wrap">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit"
+                (click)="
+              onEdit(
+                jobOpening.location?.value?.city?.value?.description?.value,
+                jobOpening.location?.value?.city?.value?.description?.id ?? ''
+              )
+            "
+                matTooltipPosition="after"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <span class="name">Description: </span>
+              <span>{{
+                jobOpening.location?.value?.city?.value?.description?.value
+              }}</span>
+            </div>
+          }
+        }
+        @if (jobOpening.location?.value?.region?.value) {
+          <div class="wrap-entity">
+            <div class="wrap-copy">
+              <span>
+                <span class="name">Region:</span>
+                <span class="value">
+                  {{ jobOpening.location?.value?.region?.value?.name?.value }}
+                </span>
+              </span>
+              <grc-copy-btn
+                [value]="jobOpening.location?.value?.region?.value?.name?.value"
+              ></grc-copy-btn>
+            </div>
+            <div class="wrap-copy">
+              <span>
+                <span class="name">Geo Id:</span>
+                <span
+                  class="value"
+                  [class.no-data]="!jobOpening.location?.value?.region?.geoId"
+                >
+                  {{
+                    jobOpening.location?.value?.region?.geoId ?? 'No Id yet'
+                  }}</span
+                >
+              </span>
+              @if (jobOpening.location?.value?.region?.geoId) {
+                <grc-copy-btn
+                  [value]="jobOpening.location?.value?.region?.geoId"
+                ></grc-copy-btn>
+              }
+            </div>
+            @if (
+              jobOpening.location?.value?.region?.options &&
+              isArray(jobOpening.location?.value?.region?.options) &&
+              (jobOpening.location?.value?.region?.options?.length ?? 0 > 1)
+            ) {
+              <mat-form-field appearance="outline">
+                <mat-label>Select region</mat-label>
+                <mat-select
+                  (selectionChange)="
+                    onSelectChange(
+                      $event,
+                      jobOpening.location?.value?.region?.id ?? ''
+                    )
+                  "
+                >
+                  <mat-option [value]="null">n/a</mat-option>
+                  @for (
+                    option of jobOpening.location?.value?.region?.options;
+                    track option.id
+                  ) {
+                    <mat-option [value]="option.id">
+                      {{ option.name }} : {{ option.id }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            }
+          </div>
+          @if (jobOpening.location?.value?.region?.value?.description?.value) {
+            <div class="description-wrap">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit"
+                (click)="
+              onEdit(
+                jobOpening.location?.value?.region?.value?.description?.value,
+                jobOpening.location?.value?.region?.value?.description?.id ?? ''
+              )
+            "
+                matTooltipPosition="after"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <span class="name">Description: </span>
+              <span>{{
+                jobOpening.location?.value?.region?.value?.description?.value
+              }}</span>
+            </div>
+          }
+        }
+      </div>
+    }
+    @if (jobOpening.project) {
+      <mat-divider></mat-divider>
+      <div>
+        <div class="wrap-entity">
+          <h4 class="wrap-copy">
+            <div>Project</div>
+            <grc-copy-btn
+              [value]="jobOpening?.project?.property"
+            ></grc-copy-btn>
+          </h4>
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Geo Id:</span>
+              <span class="value" [class.no-data]="!jobOpening.project?.geoId">
+                {{ jobOpening.project?.geoId ?? 'No Id yet' }}</span
+              >
+            </span>
+            @if (jobOpening.project?.geoId) {
+              <grc-copy-btn [value]="jobOpening?.project?.geoId"></grc-copy-btn>
+            }
+          </div>
+        </div>
+        <div class="wrap-entity">
+          <div class="wrap-copy">
+            <span>
+              <span class="name">Project:</span>
+              <span class="value">
+                {{ jobOpening.project.value?.name?.value }}</span
+              >
+            </span>
+            @if (jobOpening.project.value?.name?.value) {
+              <grc-copy-btn
+                [value]="jobOpening.project?.value?.name?.value"
+              ></grc-copy-btn>
+            }
+          </div>
+          @if (!jobOpening.project?.value?.geoId) {
+            <span style="color: #4dbf63">Will create new entity</span>
+          } @else {
+            <div class="wrap-copy">
+              <span>
+                <span class="name">Geo Id:</span>
+                <span
+                  class="value"
+                  [class.no-data]="!jobOpening.project?.value?.geoId"
+                >
+                  {{ jobOpening.project?.value?.geoId ?? 'No Id yet' }}</span
+                >
+              </span>
+              @if (jobOpening.project?.value?.geoId) {
+                <grc-copy-btn
+                  [value]="jobOpening?.project?.value?.geoId"
+                ></grc-copy-btn>
+              }
+            </div>
+          }
+          @if (
+            jobOpening.project?.options &&
+            isArray(jobOpening.project?.options) &&
+            (jobOpening.project?.options?.length ?? 0 > 1)
+          ) {
+            <mat-form-field appearance="outline">
+              <mat-label>Select project</mat-label>
+              <mat-select
+                (selectionChange)="
+                  onSelectChange($event, jobOpening.project?.id ?? '')
+                "
+              >
+                <mat-option [value]="null">n/a</mat-option>
+                @for (option of jobOpening.project?.options; track option.id) {
+                  <mat-option [value]="option.id">
+                    {{ option.name }} : {{ option.id }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          }
+        </div>
+      </div>
+      @if (!jobOpening.project?.value?.geoId) {
+        <div style="padding: 20px; background-color: #d7f7e0">
+          <h4>Project data</h4>
+          @if (jobOpening.project.value?.description?.value) {
+            <mat-divider></mat-divider>
+            <div class="description-wrap">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit"
+                (click)="
+              onEdit(
+                jobOpening?.project?.value?.description?.value,
+                jobOpening?.project?.value?.description?.id ?? ''
+              )
+            "
+                matTooltipPosition="after"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <span class="name">Description: </span>
+              <span>{{ jobOpening.project?.value?.description?.value }}</span>
+            </div>
+          }
+          @if (jobOpening?.project?.value?.types?.value?.length ?? 0 > 0) {
+            <mat-divider></mat-divider>
+            <div>
+              <div class="wrap-entity">
+                <h4 class="wrap-copy">
+                  <div>Types:</div>
+                  <grc-copy-btn
+                    [value]="jobOpening?.project?.value?.types?.property"
+                  ></grc-copy-btn>
+                </h4>
+                <div class="wrap-copy">
+                  <span>
+                    <span class="name">Geo Id:</span>
+                    <span
+                      class="value"
+                      [class.no-data]="
+                        !jobOpening?.project?.value?.types?.geoId
+                      "
+                    >
+                      {{
+                        jobOpening?.project?.value?.types?.geoId ?? 'No Id yet'
+                      }}
+                    </span>
+                  </span>
+                  @if (jobOpening?.project?.value?.types?.geoId) {
+                    <grc-copy-btn
+                      [value]="jobOpening?.project?.value?.types?.geoId"
+                    ></grc-copy-btn>
+                  }
+                </div>
+              </div>
+              <div>
+                @for (
+                  type of jobOpening?.project?.value?.types?.value;
+                  track type.id
+                ) {
+                  <div class="wrap-entity">
+                    <div class="wrap-copy">
+                      <span>
+                        <span class="name">Type:</span>
+                        <span class="value">
+                          {{ type?.value?.name?.value }}</span
+                        >
+                      </span>
+                      <grc-copy-btn
+                        [value]="type?.value?.name?.value"
+                      ></grc-copy-btn>
+                    </div>
+                    <div class="wrap-copy">
+                      <span>
+                        <span class="name">Geo Id:</span>
+                        <span class="value" [class.no-data]="!type.geoId">
+                          {{ type.geoId ?? 'No Id yet' }}</span
+                        >
+                      </span>
+                      @if (type.geoId) {
+                        <grc-copy-btn [value]="type.geoId"></grc-copy-btn>
+                      }
+                    </div>
+                    @if (
+                      type?.options &&
+                      isArray(type.options) &&
+                      type.options.length > 1
+                    ) {
+                      <mat-form-field appearance="outline">
+                        <mat-label>Select type</mat-label>
+                        <mat-select
+                          (selectionChange)="onSelectChange($event, type.id)"
+                        >
+                          <mat-option [value]="null">n/a</mat-option>
+                          @for (option of type.options; track option.id) {
+                            <mat-option [value]="option.id">
+                              {{ option.name }} : {{ option.id }}
+                            </mat-option>
+                          }
+                        </mat-select>
+                      </mat-form-field>
+                    }
+                  </div>
+                  @if (type?.value?.description?.value) {
+                    <div class="description-wrap">
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        matTooltip="Edit"
+                        (click)="
+              onEdit(
+                type.value?.description?.value,
+                type.value?.description?.id ?? ''
+              )
+            "
+                        matTooltipPosition="after"
+                      >
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <span class="name">Description: </span>
+                      <span>{{ type.value?.description?.value }}</span>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+          }
+          @if (jobOpening.project?.value?.avatar) {
+            <mat-divider></mat-divider>
+            <div>
+              <div class="wrap-entity">
+                <h4 class="wrap-copy">
+                  <div>Avatar:</div>
+                  <grc-copy-btn
+                    [value]="jobOpening.project?.value?.avatar?.property"
+                  ></grc-copy-btn>
+                </h4>
+                <div class="wrap-copy">
+                  <span>
+                    <span class="name">Geo Id:</span>
+                    <span
+                      class="value"
+                      [class.no-data]="
+                        !jobOpening.project?.value?.avatar?.geoId
+                      "
+                    >
+                      {{
+                        jobOpening.project?.value?.avatar?.geoId ?? 'No Id yet'
+                      }}</span
+                    >
+                  </span>
+                  @if (jobOpening.project?.value?.avatar?.geoId) {
+                    <grc-copy-btn
+                      [value]="jobOpening.project?.value?.avatar?.geoId"
+                    ></grc-copy-btn>
+                  }
+                </div>
+              </div>
+              <div class="wrap-entity">
+                <div class="wrap-copy">
+                  <span>
+                    <span class="name">Image:</span>
+                  </span>
+                  <grc-copy-btn
+                    [value]="jobOpening.project?.value?.avatar?.property"
+                  ></grc-copy-btn>
+                </div>
+                <div class="wrap-copy">
+                  <span>
+                    <span class="name">Geo Id:</span>
+                    <span
+                      class="value"
+                      [class.no-data]="
+                        !jobOpening.project?.value?.avatar?.value?.geoId
+                      "
+                    >
+                      {{
+                        jobOpening.project?.value?.avatar?.value?.geoId ??
+                          'No Id yet'
+                      }}</span
+                    >
+                  </span>
+                  @if (jobOpening.project?.value?.avatar?.value?.geoId) {
+                    <grc-copy-btn
+                      [value]="jobOpening.project?.value?.avatar?.value?.geoId"
+                    ></grc-copy-btn>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+          @if (jobOpening.project?.value?.cover) {
+            <mat-divider></mat-divider>
+            <div>
+              <div class="wrap-entity">
+                <h4 class="wrap-copy">
+                  <div>Cover:</div>
+                  <grc-copy-btn
+                    [value]="jobOpening.project?.value?.cover?.property"
+                  ></grc-copy-btn>
+                </h4>
+                <div class="wrap-copy">
+                  <span>
+                    <span class="name">Geo Id:</span>
+                    <span
+                      class="value"
+                      [class.no-data]="!jobOpening.project?.value?.cover?.geoId"
+                    >
+                      {{
+                        jobOpening.project?.value?.cover?.geoId ?? 'No Id yet'
+                      }}</span
+                    >
+                  </span>
+                  @if (jobOpening.project?.value?.cover?.geoId) {
+                    <grc-copy-btn
+                      [value]="jobOpening.project?.value?.cover?.geoId"
+                    ></grc-copy-btn>
+                  }
+                </div>
+              </div>
+              <div class="wrap-entity">
+                <div class="wrap-copy">
+                  <span>
+                    <span class="name">Image</span>
+                  </span>
+                  <grc-copy-btn
+                    [value]="jobOpening.project?.value?.cover?.property"
+                  ></grc-copy-btn>
+                </div>
+                <div class="wrap-copy">
+                  <span>
+                    <span class="name">Geo Id:</span>
+                    <span
+                      class="value"
+                      [class.no-data]="
+                        !jobOpening.project?.value?.cover?.value?.geoId
+                      "
+                    >
+                      {{
+                        jobOpening.project?.value?.cover?.value?.geoId ??
+                          'No Id yet'
+                      }}</span
+                    >
+                  </span>
+                  @if (jobOpening.project?.value?.cover?.value?.geoId) {
+                    <grc-copy-btn
+                      [value]="jobOpening.project?.value?.cover?.value?.geoId"
+                    ></grc-copy-btn>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+          @if (jobOpening.project.value?.website) {
+            <mat-divider></mat-divider>
+            <div class="wrap-entity">
+              <h4 class="wrap-copy">
+                <div>Website:</div>
+                <grc-copy-btn
+                  [value]="jobOpening.project.value?.website?.property"
+                ></grc-copy-btn>
+              </h4>
+              <div class="wrap-copy">
+                <span>
+                  <span class="name">Geo Id:</span>
+                  <span
+                    class="value"
+                    [class.no-data]="!jobOpening.project.value?.website?.geoId"
+                  >
+                    {{
+                      jobOpening.project.value?.website?.geoId ?? 'No Id yet'
+                    }}</span
+                  >
+                </span>
+                @if (jobOpening.project.value?.website?.geoId) {
+                  <grc-copy-btn
+                    [value]="jobOpening.project.value?.website?.geoId"
+                  ></grc-copy-btn>
+                }
+              </div>
+            </div>
+            <div class="wrap-entity">
+              <div class="wrap-copy">
+                <span>
+                  <span class="name">Url:</span>
+                  @if (jobOpening.project.value?.website?.value) {
+                    <a
+                      class="value"
+                      href="{{ jobOpening.project.value?.website?.value }}"
+                      target="_blank"
+                    >
+                      {{ jobOpening.project.value?.website?.value }}
+                    </a>
+                  }
+                </span>
+              </div>
+            </div>
+          }
+          @if (jobOpening.project.value?.x) {
+            <mat-divider></mat-divider>
+            <div class="wrap-entity">
+              <h4 class="wrap-copy">
+                <div>X:</div>
+                <grc-copy-btn
+                  [value]="jobOpening.project.value?.x?.property"
+                ></grc-copy-btn>
+              </h4>
+              <div class="wrap-copy">
+                <span>
+                  <span class="name">Geo Id:</span>
+                  <span
+                    class="value"
+                    [class.no-data]="!jobOpening.project.value?.x?.geoId"
+                  >
+                    {{
+                      jobOpening.project.value?.x?.geoId ?? 'No Id yet'
+                    }}</span
+                  >
+                </span>
+                @if (jobOpening.project.value?.x?.geoId) {
+                  <grc-copy-btn
+                    [value]="jobOpening.project.value?.x?.geoId"
+                  ></grc-copy-btn>
+                }
+              </div>
+            </div>
+            <div class="wrap-entity">
+              <div class="wrap-copy">
+                <span>
+                  <span class="name">Url:</span>
+                  @if (jobOpening.project.value?.x?.value) {
+                    <a
+                      class="value"
+                      href="{{ jobOpening.project.value?.x?.value }}"
+                      target="_blank"
+                    >
+                      {{ jobOpening.project.value?.x?.value }}
+                    </a>
+                  }
+                </span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</section>

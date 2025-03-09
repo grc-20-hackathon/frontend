@@ -1,0 +1,58 @@
+header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+h4 {
+  margin: 0;
+}
+
+mat-divider {
+  margin: 20px 0;
+}
+
+.wrap-entity {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.wrap-copy {
+  display: flex;
+  align-items: center;
+
+  span {
+    text-wrap: nowrap;
+  }
+
+  .value {
+    font-weight: normal;
+
+    &.no-data {
+      color: red;
+    }
+  }
+}
+
+.value-wrap {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 100px 1200px ;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.description-wrap {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 50px 100px 1100px ;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.name {
+  text-decoration: underline;
+  font-weight: 500;
+}

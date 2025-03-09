@@ -1,0 +1,37 @@
+<h1>Configuration</h1>
+<section class="wrapper" [class.loading]="loading()">
+  @if (loading()) {
+    <mat-spinner></mat-spinner>
+  } @else {
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title> AI Configuration </mat-panel-title>
+          <mat-panel-description>
+            Configure the AI model
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <grc-ai-form
+          [typeOptions]="typeOptions()"
+          [modelOptions]="modelOptions()"
+          [formData]="aiForm"
+          (formValueChange)="aiFormChange($event)"
+        ></grc-ai-form>
+      </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title> Sites For Data Settings </mat-panel-title>
+          <mat-panel-description>
+            Configuration XPaths for each site
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <grc-site-settings-form
+          [siteOptions]="siteOptions()"
+          [formData]="siteSettingsForm"
+          (formValueChange)="siteSettingsFormChange($event)"
+          (addSite)="addSite()"
+        ></grc-site-settings-form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  }
+</section>

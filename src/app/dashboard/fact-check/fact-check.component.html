@@ -1,0 +1,71 @@
+<div class="header">
+  <h1>Fact check</h1>
+  <div class="right-part">
+    @if (!jobOpeningsData().length) {
+      <mat-form-field appearance="outline">
+        <mat-label>Count of Jobs</mat-label>
+        <input
+          [(ngModel)]="countOfJobs"
+          matInput
+          type="number"
+          min="0"
+          [max]="maxCountOfJobs"
+          step="1"
+          (input)="validateNumber($event)"
+        />
+      </mat-form-field>
+      <button
+        mat-flat-button
+        class="btn-with-margin"
+        [disabled]="loading() || hasLoadedData()"
+        (click)="getData()"
+      >
+        Get data
+      </button>
+    } @else {
+      <mat-checkbox [disabled]="hasLoadedData()" (change)="onPublishAll($event.checked)" color="primary">
+        Publish all
+      </mat-checkbox>
+      <button mat-flat-button [disabled]="loading() || hasLoadedData() || !hasSelectedJob()" (click)="publish()">
+        Publish
+      </button>
+    }
+  </div>
+</div>
+<section class="wrapper" [class.loading]="loading()">
+  @if (loading()) {
+    <mat-spinner></mat-spinner>
+  } @else {
+    @if (jobOpeningsData().length > 0) {
+      <mat-accordion>
+        @for (jobOpening of jobOpeningsData(); track jobOpening.id) {
+          <mat-expansion-panel [disabled]="jobOpening.isLoading">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ jobOpening?.name?.value }}
+              </mat-panel-title>
+              <mat-panel-description>
+                @if (jobOpening.isLoading) {
+                  <mat-spinner></mat-spinner>
+                }
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            @if (jobOpening.isLoading) {
+              <mat-spinner></mat-spinner>
+            } @else {
+              <grc-job-opening-form
+                [jobOpening]="jobOpening"
+                (jobOpeningChange)="jobOpeningChanged($event)"
+              ></grc-job-opening-form>
+            }
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    } @else {
+      <div class="empty">
+        <mat-icon>info</mat-icon>
+        <p>No data</p>
+      </div>
+    }
+  }
+</section>

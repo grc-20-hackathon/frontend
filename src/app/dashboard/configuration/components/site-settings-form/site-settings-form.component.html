@@ -1,0 +1,105 @@
+<form [formGroup]="form">
+  <div class="toggle">
+    <mat-slide-toggle
+      [formControlName]="SiteSettingsFormFieldsEnum.IsGenerateAutomatically"
+      name="enableWifi"
+      >Generate XPaths automatically
+    </mat-slide-toggle>
+  </div>
+  <div class="site">
+    <mat-form-field appearance="outline">
+      <mat-label>Site</mat-label>
+      <mat-select [formControlName]="SiteSettingsFormFieldsEnum.SiteId">
+        <mat-optgroup>
+          @if (siteOptions) {
+            @for (option of siteOptions; track option.id) {
+              <mat-option [value]="option.id">{{ option.name }}</mat-option>
+            }
+          } @else {
+            <mat-option [disabled]="true">Loading...</mat-option>
+          }
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      class="add-site"
+      (click)="$event.preventDefault(); addSite.emit()"
+    >
+      <mat-icon>add</mat-icon>Add Site
+    </button>
+  </div>
+  <div
+    class="array-wrapper"
+    [formArrayName]="SiteSettingsFormFieldsEnum.TitleUrlXPath"
+  >
+    @if (!form.get(SiteSettingsFormFieldsEnum.IsGenerateAutomatically)?.value) {
+      <form [formGroup]="xPaths" class="x-path-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Job Title XPath</mat-label>
+          <input
+            [formControlName]="XPathsEnum.JobTitleXPath"
+            class="max-tokens"
+            matInput
+            type="text"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Job Description XPath</mat-label>
+          <input
+            [formControlName]="XPathsEnum.JobDescriptionXPath"
+            class="max-tokens"
+            matInput
+            type="text"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Required Skills XPath</mat-label>
+          <input
+            [formControlName]="XPathsEnum.RequiredSkillsXPath"
+            class="max-tokens"
+            matInput
+            type="text"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Work Format XPath</mat-label>
+          <input
+            [formControlName]="XPathsEnum.WorkFormatXPath"
+            class="max-tokens"
+            matInput
+            type="text"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Location XPath</mat-label>
+          <input
+            [formControlName]="XPathsEnum.LocationXPath"
+            class="max-tokens"
+            matInput
+            type="text"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Salary XPath</mat-label>
+          <input
+            [formControlName]="XPathsEnum.SalaryXPath"
+            class="max-tokens"
+            matInput
+            type="text"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Publication Date XPath</mat-label>
+          <input
+            [formControlName]="XPathsEnum.PublicationDateXPath"
+            class="max-tokens"
+            matInput
+            type="text"
+          />
+        </mat-form-field>
+      </form>
+    }
+  </div>
+</form>

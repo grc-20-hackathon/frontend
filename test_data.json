@@ -1,0 +1,36 @@
+{  
+  "jobOpening": {  
+    "name": "Senior Software Engineer",  
+    "description": "Looking for an experienced software engineer to join our team.",  
+    "jobDescription": "You will be responsible for developing high-quality software solutions."  
+  },  
+  "Role": {  
+    "name": "Software Engineer",  
+    "description": "Responsible for developing software applications."  
+  },  
+  "skills": [  
+    {  
+      "name": "C#",  
+      "description": "Proficient in C# programming language."  
+    },  
+    {  
+      "name": "JavaScript",  
+      "description": "Experience with JavaScript frameworks like React or Angular."  
+    }  
+  ],  
+  "workFormats": [  
+    {  
+      "workFormat": {  
+        "name": "Remote",  
+        "description": "Work from anywhere."  
+      }  
+    }  
+  ],  
+  "company": {  
+    "name": "Tech Solutions",  
+    "Description": "A leading tech company specializing in software development."  
+  },  
+  "Salary": "$100,000 - $120,000",  
+  "PublishDate": "2025-02-17",  
+  "Location": "Remote"  
+}

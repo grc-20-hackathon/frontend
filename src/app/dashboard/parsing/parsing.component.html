@@ -1,0 +1,51 @@
+<div class="header">
+  <h1>Parse</h1>
+  <div class="buttons">
+    @if (parsedSites().length === 0) {
+      <button mat-flat-button [disabled]="loading()" (click)="parse($event)">Start Parsing</button>
+    } @else {
+      <button mat-button [disabled]="loading()" (click)="parse($event)">Re-parse</button>
+    }
+  </div>
+</div>
+
+<section class="wrapper" [class.loading]="loading()">
+  @if (loading()) {
+    <mat-spinner></mat-spinner>
+  } @else {
+    @if (parsedSites().length === 0) {
+      <div class="empty">
+        <mat-icon>info</mat-icon>
+        <p>No data</p>
+      </div>
+    } @else {
+      <mat-accordion class="example-headers-align" multi>
+        @for (parsedSite of parsedSites(); track parsedSite.siteName) {
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title> {{ parsedSite.siteName }} </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="send-to-db">
+              <button mat-flat-button [disabled]="loading() || parsedSite.isSendToDb" (click)="sendToDb(parsedSite.id)">Send to db</button>
+            </div>
+            <div class="parsed-site">
+              <div>
+                <h4>Site XPaths:</h4>
+                <ngx-json-viewer
+                  [json]="JSON.parse(parsedSite.parsedXPaths)"
+                ></ngx-json-viewer>
+              </div>
+              <mat-divider [vertical]="true"></mat-divider>
+              <div>
+                <h4>Site Data new:</h4>
+                <ngx-json-viewer
+                  [json]="JSON.parse(parsedSite.parsedData)"
+                ></ngx-json-viewer>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    }
+  }
+</section>

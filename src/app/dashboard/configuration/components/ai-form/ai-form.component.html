@@ -1,0 +1,94 @@
+<form [formGroup]="form">
+  <mat-form-field appearance="outline">
+    <mat-label>AI Model</mat-label>
+    <mat-select [formControlName]="AiFormFieldsEnum.AiModel">
+      <mat-optgroup>
+        @if (modelOptions) {
+          @for (option of modelOptions; track option.id) {
+            <mat-option [value]="option.id">{{ option.name }}</mat-option>
+          }
+        } @else {
+          <mat-option [disabled]="true">Loading...</mat-option>
+        }
+      </mat-optgroup>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>AI Type</mat-label>
+    <mat-select [formControlName]="AiFormFieldsEnum.AiType">
+      <mat-optgroup>
+        @if (typeOptions) {
+          @for (option of typeOptions; track option.id) {
+            <mat-option [value]="option.id">{{ option.name }}</mat-option>
+          }
+        } @else {
+          <mat-option [disabled]="true">Loading...</mat-option>
+        }
+      </mat-optgroup>
+    </mat-select>
+  </mat-form-field>
+  <div class="api-token">
+    <mat-form-field appearance="outline">
+      <mat-label>Api Token</mat-label>
+      <input
+        [formControlName]="AiFormFieldsEnum.ApiKey"
+        class="max-tokens"
+        matInput
+        type="text"
+      />
+    </mat-form-field>
+    @if (isApiTokenDisabled) {
+      <button mat-icon-button>
+        <mat-icon (click)="editApiToken($event)">edit</mat-icon>
+      </button>
+    } @else {
+      <div class="buttons">
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="cancelEditApiToken($event)"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          color="accent"
+          (click)="cancelEditApiToken($event)"
+        >
+          <mat-icon>check</mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+  <mat-form-field appearance="outline">
+    <mat-label>Max Tokens</mat-label>
+    <input
+      [formControlName]="AiFormFieldsEnum.MaxTokens"
+      class="max-tokens"
+      matInput
+      type="number"
+    />
+  </mat-form-field>
+  <div class="temperature">
+    <mat-label>AI Temperature</mat-label>
+    <mat-slider min="0" max="1" step="0.1" showTickMarks discrete>
+      <input [formControlName]="AiFormFieldsEnum.Temperature" matSliderThumb />
+    </mat-slider>
+  </div>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Prompt for get XPaths</mat-label>
+    <textarea
+      [rows]="3"
+      [formControlName]="AiFormFieldsEnum.PromptForXPath"
+      matInput
+    ></textarea>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Prompt for get XPath Data</mat-label>
+    <textarea
+      [rows]="3"
+      [formControlName]="AiFormFieldsEnum.PromptForXPathData"
+      matInput
+    ></textarea>
+  </mat-form-field>
+</form>

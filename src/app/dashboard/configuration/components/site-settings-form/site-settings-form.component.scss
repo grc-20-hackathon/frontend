@@ -1,0 +1,41 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toggle {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.site {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 120px;
+}
+
+.add-site {
+  margin-top: 5px;
+}
+
+.x-path {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  gap: 5px;
+  button {
+    margin-top: 5px;
+  }
+}
+
+.x-path-form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+

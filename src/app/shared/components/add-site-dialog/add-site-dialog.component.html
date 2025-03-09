@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Enter Site URL</h1>
+<div mat-dialog-content>
+  <form [formGroup]="siteForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Site URL</mat-label>
+      <input matInput formControlName="siteUrl" />
+      @if (siteForm.get('siteUrl')?.hasError('required')) {
+        <mat-error> Site URL is required </mat-error>
+      }
+      @if (siteForm.get('siteUrl')?.hasError('pattern')) {
+        <mat-error> Please enter a valid URL </mat-error>
+      }
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-flat-button (click)="onAdd()" [disabled]="siteForm.invalid">
+    Add
+  </button>
+</div>
