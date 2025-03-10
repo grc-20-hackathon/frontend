@@ -1,3 +1,23 @@
+# Fact Check and Geo-Publish Date Angular Application
+
+This Angular application enhances data quality by implementing fact-checking mechanisms and associating publication dates with geographical locations. It ensures meticulous tracking of data edits and selections, facilitating the creation of a unified Markdown string for streamlined data management.&#8203;:contentReference[oaicite:2]{index=2}
+
+## Features
+
+- **Fact-Checking**
+- **Publication Dates**
+- **Data Tracking**
+
+![image](https://github.com/user-attachments/assets/4a95b85e-d2ef-4b51-b2a5-058737349832)
+  
+![image](https://github.com/user-attachments/assets/dfed9e14-6647-4981-be18-2357544ce963)
+
+![image](https://github.com/user-attachments/assets/26a3e838-b72a-4dea-b799-3440ef70ce94)
+
+
+## Installation
+
+
 # Frontend
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6.
