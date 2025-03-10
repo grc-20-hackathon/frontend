@@ -94,10 +94,11 @@ export class ValidateDataService {
           },
           project: {
             ...jobOpening.project,
+            options: projectResults?.options,
             value: {
               ...jobOpening.project?.value,
               geoId: projectResults?.geoId ?? null,
-              options: projectResults?.options,
+
             },
           },
         };

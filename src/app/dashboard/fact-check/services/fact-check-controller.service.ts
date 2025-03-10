@@ -27,6 +27,8 @@ export class FactCheckControllerService {
     this.netApolloClient = this.apollo.use('netClient');
   }
 
+  //3
+
   getData(countOfJobs: number) {
     this.loading.set(true);
     this.hasLoadedData.set(true);
@@ -37,7 +39,7 @@ export class FactCheckControllerService {
           count: countOfJobs,
         },
       })
-      .pipe(map(({ data }) => this.converter.fromDtoArray([data.dtos[3]])))
+      .pipe(map(({ data }) => this.converter.fromDtoArray(data.dtos)))
       .subscribe((convertedJobOpening) => {
         if (!convertedJobOpening || convertedJobOpening.length === 0) {
           this.hasLoadedData.set(false);
@@ -89,7 +91,6 @@ export class FactCheckControllerService {
     this.hasLoadedData.set(true);
     const jobsForPublish = this.jobOpeningsData()
       .filter((job) => job.isSelected && job.canPublish)
-      .map((job) => this.getAllSelectedFields(job))
       .map((job) => this.converter.toPublish(job));
     if (jobsForPublish.length > 0) {
       this.searchApi
@@ -128,7 +129,14 @@ export class FactCheckControllerService {
     const result: Partial<IJobOpening> = {}; // Partial to ensure type safety
 
     for (const prop in job) {
-      if (job.hasOwnProperty(prop)) {
+      if(prop === 'Content') {
+        const field = job[prop as keyof IJobOpening];
+        console.log();
+        //@ts-ignore
+        result[prop as keyof IJobOpening] = field;
+      }
+
+      if (job.hasOwnProperty(prop) &&  prop !== 'Content') {
         const field = job[prop as keyof IJobOpening];
 
         if (field && Array.isArray((field as any).value)) {

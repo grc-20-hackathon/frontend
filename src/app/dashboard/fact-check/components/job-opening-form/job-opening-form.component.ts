@@ -45,9 +45,8 @@ export class JobOpeningFormComponent {
   constructor(private readonly dialog: MatDialog) {}
 
   onProjectSelectionChange(e: boolean) {
-    const copiedJob = structuredClone(this.jobOpening);
     const updatedJob = {
-      ...copiedJob,
+      ...this.jobOpening,
       isSelected: e,
     };
     this.jobOpeningChange.emit(updatedJob);
@@ -55,7 +54,7 @@ export class JobOpeningFormComponent {
 
   onEntitySelectionChange(checked: boolean, id: string) {
     const copiedJob = structuredClone(this.jobOpening);
-    const isUpdate = this.updateElementById(copiedJob, id, {
+    const isUpdate = this.updateElementById(this.jobOpening, id, {
       isSelected: checked,
     });
     if (isUpdate) {
@@ -65,7 +64,10 @@ export class JobOpeningFormComponent {
 
   onSelectChange(e: MatSelectChange, id: string): void {
     const { value } = e;
-    this.updateJobOpening(value, id);
+    if(Boolean(id)) {
+      this.updateJobOpening(value, id);
+    }
+
   }
 
   onEdit(value: string | undefined, id: string) {
@@ -81,12 +83,11 @@ export class JobOpeningFormComponent {
       .pipe(
         filter((data) => Boolean(data)),
         tap((data) => {
-          const copiedJob = structuredClone(this.jobOpening);
-          const isUpdate = this.updateElementById(copiedJob, id, {
+          const isUpdate = this.updateElementById(this.jobOpening, id, {
             value: data,
           });
           if (isUpdate) {
-            this.jobOpeningChange.emit(copiedJob);
+            this.jobOpeningChange.emit(this.jobOpening);
           }
         })
       )
@@ -94,10 +95,10 @@ export class JobOpeningFormComponent {
   }
 
   private updateJobOpening(geoId: string, id: string): void {
-    const updatedJobOpening = structuredClone(this.jobOpening);
-    const isUpdatedComplete = this.updateGeoId(updatedJobOpening, id, geoId);
+    const isUpdatedComplete = this.updateGeoId(this.jobOpening, id, geoId);
+    console.log(isUpdatedComplete);
     if (isUpdatedComplete) {
-      this.jobOpeningChange.emit(updatedJobOpening);
+      this.jobOpeningChange.emit(this.jobOpening);
     }
   }
 

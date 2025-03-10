@@ -1121,7 +1121,7 @@
               <mat-label>Select project</mat-label>
               <mat-select
                 (selectionChange)="
-                  onSelectChange($event, jobOpening.project?.id ?? '')
+                  onSelectChange($event, jobOpening.project?.value?.id ?? '')
                 "
               >
                 <mat-option [value]="null">n/a</mat-option>

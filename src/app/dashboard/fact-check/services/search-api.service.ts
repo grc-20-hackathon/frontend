@@ -12,7 +12,7 @@ export class SearchApiService {
 
   search(search: string): Observable<ISearchResult> {
     return this.http.get<ISearchResult>(
-      `https://api-testnet.grc-20.thegraph.com/search?q=${search}&network=TESTNET`
+      `https://api-testnet.grc-20.thegraph.com/search?q=${search}`
     );
   }
 

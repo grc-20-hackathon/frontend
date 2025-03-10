@@ -20,7 +20,7 @@ export const ROLES_TYPE_ID = 'JkzhbbrXFMfXN7sduMKQRp';
 export const EMPLOYMENT_TYPE_ID = 'UZJEi1nNA7NKys64rJoHKA';
 export const EMPLOYMENTS_TYPE_ID = 'BLCNN8nrcU6T6NLu2QDQtw';
 
-export const PROJECT_TYPE_ID = 'V7XvcnLXtbj7T2rvdNtKid';
+export const PROJECT_TYPE_ID = '9vk7Q3pz7US3s2KePFQrJT';
 export const LOCATION_TYPE_ID = '3hCaGwjgDDkpKbRU3Er9vU';
 export const CITY_TYPE_ID = 'D6Wy4bdtdoUrG3PDZceHr';
 export const REGION_TYPE_ID = 'Qu6vfQq68ecZ4PkihJ4nZN';
@@ -45,4 +45,4 @@ export const COMPANY_TYPE_ID = 'UhpHYoFEzAov9WwqtDwQk4';
 
 export const PUBLISH_DATE_TYPE_ID = 'KPNjGaLx5dKofVhT6Dfw22';
 
-export const JOB_OPENING_COVER_ID = 'QUTeDyt9ZB6RxURUJonipb';
+export const JOB_OPENING_COVER_ID = '8H9KxrxPF7vsfRRVHuBgSJ'; //'QUTeDyt9ZB6RxURUJonipb';

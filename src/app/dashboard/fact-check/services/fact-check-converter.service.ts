@@ -41,6 +41,7 @@ export class FactCheckConverterService {
   toPublish(
     job: IJobOpening
   ): Omit<IJobOpening, 'canPublish' | 'isSelected' | 'geoId' | 'isLoading'> {
+    console.log(job);
     return {
       id: job.id,
       name: job.name,
@@ -253,8 +254,10 @@ export class FactCheckConverterService {
     return {
       ...project,
       geoId: PROJECT_TYPE_ID,
+      id: uuidv4(),
       property: 'Project',
       value: {
+        id: uuidv4(),
         name: this.enrichDataWithId(project.value.name),
         description: this.enrichDataWithId(project.value.description),
         cover: this.getImgData(project.value.cover, COVER_TYPE_ID),
