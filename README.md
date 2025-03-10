@@ -4,9 +4,16 @@ This Angular application enhances data quality by implementing fact-checking mec
 
 ## Features
 
-- **Fact-Checking**: :contentReference[oaicite:3]{index=3}&#8203;:contentReference[oaicite:4]{index=4}
-- **Publication Dates**: :contentReference[oaicite:5]{index=5}&#8203;:contentReference[oaicite:6]{index=6}
-- **Data Tracking**: :contentReference[oaicite:7]{index=7}&#8203;:contentReference[oaicite:8]{index=8}
+- **Fact-Checking**
+- **Publication Dates**
+- **Data Tracking**
+
+![image](https://github.com/user-attachments/assets/4a95b85e-d2ef-4b51-b2a5-058737349832)
+  
+![image](https://github.com/user-attachments/assets/dfed9e14-6647-4981-be18-2357544ce963)
+
+![image](https://github.com/user-attachments/assets/26a3e838-b72a-4dea-b799-3440ef70ce94)
+
 
 ## Installation
 
